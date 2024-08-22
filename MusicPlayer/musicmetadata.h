@@ -12,6 +12,8 @@ public:
     MusicMetaData();
     void GetFromMp3(string filePath);//从MP3文件读取信息
 
+    void GetFromFlac(string filePath);//从Flac文件读取信息
+
     //mp3文件的标签
     struct ID3V2
     {
@@ -38,7 +40,7 @@ public:
 
             //帧中的数据
             char *frameData;
-            int frameDataSize;
+            int frameDataSize=0;
         };
         vector<TagFrame> tagFrames;
     };
@@ -57,13 +59,35 @@ public:
         char Genre;              /*类型*/
     };
 
+
+    struct MetaDataBlock //flac文件的元数据块
+    {
+        struct BlockHeader
+        {
+            char BlockType;
+            char BlockSize[3]; //数据长度，不包括header
+        };
+
+        BlockHeader blockHeader;
+
+        char* data;
+        int dataSize=0;
+    };
+
+
     struct Mp3Info //MP3文件的信息
     {
         ID3V2 *pID3V2=NULL;
         ID3V1 *pID3V1=NULL;
     };
 
+    struct FlacInfo //flac文件的信息
+    {
+        vector<MetaDataBlock> metaDataBlocks;
+    };
+
     Mp3Info mp3Info;
+    FlacInfo flacInfo;
 
     //将在页面显示的信息
     QString title;//标题
@@ -73,6 +97,9 @@ public:
 private:
     void ReadMp3File(string filePath);//读取MP3文件
     void FreeMp3Data();//在获得需要的信息后free掉Mp3Info
+
+    void ReadFlacFile(string filePath);//读取Flac文件
+    void FreeFlacData();//在获得需要的信息后free掉FlacInfo
 };
 
 #endif // MUSICMETADATA_H

@@ -23,10 +23,16 @@ void MusicList::loadFile()
     while(!f.eof())
     {
         std::getline(f,s);
+        if(s=="")
+            continue;
         temp.filePath=QString::fromStdString(s);
         if(temp.filePath.mid(temp.filePath.size()-3,3)=="mp3")//若是mp3文件
         {
             temp.metaData.GetFromMp3(temp.filePath.toStdString());
+        }
+        else if(temp.filePath.mid(temp.filePath.size()-4,4)=="flac")//若是flac文件
+        {
+            temp.metaData.GetFromFlac(temp.filePath.toStdString());
         }
         list.push_back(temp);
     }

@@ -70,11 +70,12 @@ void PlayerWidget::slotPlayBtn()
 
 void PlayerWidget::slotPlay(int index)
 {
-    filePath = musiclist->list.at(index-1).filePath;
+    musicIndex =index-1;
+    filePath = musiclist->list.at(musicIndex).filePath;
     qDebug()<<filePath;
+    player->stop();
     isplaying=false;
     playBtn->setText("play");
-    musicIndex =index-1;
     player->setMedia(QUrl::fromLocalFile(filePath));
     playBtn->clicked();
     changeMusic(index);

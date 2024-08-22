@@ -45,7 +45,7 @@ private:
 
     QMediaPlayer *player;
     QSlider *playSlider;
-    QString filePath="D:\\CloudMusic\\麻枝准 - 渚.mp3";
+    QString filePath;
 
     bool isplaying=false;
 

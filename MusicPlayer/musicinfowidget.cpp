@@ -36,25 +36,34 @@ void MusicInfoWidget::initMetaData()
 
 void MusicInfoWidget::updateMetaData(int)
 {
+    initMetaData();
+
     QString filePath=musiclist->list.at(musicIndex).filePath;
-    MusicMetaData metaData=musiclist->list.at(musicIndex).metaData;//获得MP3文件元信息
-    QString fileType=filePath.mid(filePath.size()-3,3);
-    if(fileType==tr("mp3"))
+    MusicMetaData metaData=musiclist->list.at(musicIndex).metaData;//获得文件元信息
+    QString fileType=filePath.mid(filePath.size()-4,4);
+    if(fileType==tr(".mp3"))
     {
-        musicNameLabel->setText(tr("名字：")+metaData.title);
-        authorLabel->setText(tr("作者：")+metaData.artist);
+        if(!metaData.title.isEmpty())
+            musicNameLabel->setText(tr("名字：")+metaData.title);
+        if(!metaData.artist.isEmpty())
+            authorLabel->setText(tr("作者：")+metaData.artist);
         if(!metaData.cover.isNull())
         {
             QImage img= metaData.cover.scaled(580,581);
             coverLabel->setPixmap(QPixmap::fromImage(img));
         }
     }
-    else
+    else if(fileType==tr("flac"))
     {
-        musicNameLabel->setText(tr("名字：")+filePath);
-        authorLabel->setText(tr("作者：未知"));
-        QPixmap coverPixmap=QPixmap::fromImage(QImage(":/image/record.png"));
-        coverLabel->setPixmap(coverPixmap);
+        if(!metaData.title.isEmpty())
+            musicNameLabel->setText(tr("名字：")+metaData.title);
+        if(!metaData.artist.isEmpty())
+            authorLabel->setText(tr("作者：")+metaData.artist);
+        if(!metaData.cover.isNull())
+        {
+            QImage img= metaData.cover.scaled(580,581);
+            coverLabel->setPixmap(QPixmap::fromImage(img));
+        }
     }
 
 }

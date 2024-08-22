@@ -93,6 +93,10 @@ void RightWidget::slotClickMyFavorMusicWidgetItem(QListWidgetItem *item)
             {
                 m.metaData.GetFromMp3(m.filePath.toStdString());
             }
+            else if(m.filePath.mid(m.filePath.size()-4,4)=="flac")
+            {
+                m.metaData.GetFromFlac(m.filePath.toStdString());
+            }
             musiclist->list.push_back(m);
             addMyFavorMusicWidge(m.filePath);
         }
