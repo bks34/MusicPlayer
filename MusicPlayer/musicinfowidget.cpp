@@ -40,8 +40,7 @@ void MusicInfoWidget::updateMetaData(int)
 
     QString filePath=musiclist->list.at(musicIndex).filePath;
     MusicMetaData metaData=musiclist->list.at(musicIndex).metaData;//获得文件元信息
-    QString fileType=filePath.mid(filePath.size()-4,4);
-    if(fileType==tr(".mp3"))
+    if(filePath.mid(filePath.size()-3,3)==tr("mp3"))
     {
         if(!metaData.title.isEmpty())
             musicNameLabel->setText(tr("名字：")+metaData.title);
@@ -53,7 +52,7 @@ void MusicInfoWidget::updateMetaData(int)
             coverLabel->setPixmap(QPixmap::fromImage(img));
         }
     }
-    else if(fileType==tr("flac"))
+    else if(filePath.mid(filePath.size()-4,4)==tr("flac"))
     {
         if(!metaData.title.isEmpty())
             musicNameLabel->setText(tr("名字：")+metaData.title);

@@ -67,6 +67,8 @@ void MusicMetaData::GetFromMp3(std::string filePath)
             f.write(data,it->frameDataSize-imageBegin+1);
             f.close();
             cover=QImage(QString::fromStdString(tempfilename));
+            QFile::remove(QString::fromStdString("./"+tempfilename));
+
             qDebug()<<"get the image"<<cover.size().width()<<cover.size().height();
         }
 

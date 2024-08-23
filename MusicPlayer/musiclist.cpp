@@ -18,10 +18,11 @@ void MusicList::loadFile()
         qDebug("musiclist open error");
         return;
     }
-    Music temp;
-    string s;
+
     while(!f.eof())
     {
+        Music temp;
+        string s;
         std::getline(f,s);
         if(s=="")
             continue;
