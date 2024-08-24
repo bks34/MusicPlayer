@@ -38,9 +38,10 @@ SettingWidget::SettingWidget(QWidget *parent) : QWidget(parent)
                             "\n"
                             "\n"
                             "\n"
-                            "简介：该软件是一个简单的mp3音乐播放器，运用qt5制作而成，\n"
+                            "简介：该软件是一个简单的音乐播放器，运用qt5制作而成，\n"
+                            "支持mp3和flac格式文件\n"
                             "\n"
-                            "源代码地址：\n"
+                            "源代码地址：https://github.com/bks34/MusicPlayer\n"
                             "\n"));
     InfoLabel->setStyleSheet("background-color: rgba(230,210,200,150);"
                              "color: rgb(0,10,10)");
