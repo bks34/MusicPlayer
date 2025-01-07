@@ -42,12 +42,14 @@ RightWidget::RightWidget(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(stackedWidget);
 }
 
-void RightWidget::addMyFavorMusicWidge(QString filePath)
+void RightWidget::addMyFavorMusicWidge(MusicList::Music m)
 {
-    QListWidgetItem *item=new QListWidgetItem(filePath);
+    QListWidgetItem *item=new QListWidgetItem(m.metaData.title+" "+m.metaData.artist);
     QFont font=item->font();
     font.setPointSize(20);
     item->setFont(font);
+    QIcon icon(QPixmap::fromImage(m.metaData.cover));
+    item->setIcon(icon);
     playlistWidget->addItem(item);
 }
 
@@ -75,7 +77,7 @@ void RightWidget::slotClickMyFavorMusicWidgetItem(QListWidgetItem *item)
     {
         QString s;
         MusicList::Music m;
-        s= QFileDialog::getOpenFileName(pmainWidget,tr("请选择要添加的音乐"),tr("."),"*.mp3;*.flac");
+        s= QFileDialog::getOpenFileName(pmainWidget,tr("请选择要添加的音乐"),tr("."));
 
         bool exist=false;
         for(auto it=musiclist->list.begin();it!=musiclist->list.end();it++)
@@ -98,7 +100,7 @@ void RightWidget::slotClickMyFavorMusicWidgetItem(QListWidgetItem *item)
                 m.metaData.GetFromFlac(m.filePath.toStdString());
             }
             musiclist->list.push_back(m);
-            addMyFavorMusicWidge(m.filePath);
+            addMyFavorMusicWidge(m);
         }
     }
     else
@@ -127,7 +129,9 @@ void RightWidget::initMyFavoriteMusicWidget()
     playlistWidget->addItem(firstItem);
     for(auto it=musiclist->list.begin();it!=musiclist->list.end();it++)
     {
-        QListWidgetItem *item=new QListWidgetItem(it->filePath);
+        QListWidgetItem *item=new QListWidgetItem(it->metaData.title+" "+it->metaData.artist);
+        QIcon icon(QPixmap::fromImage(it->metaData.cover));
+        item->setIcon(icon);
         QFont font=item->font();
         font.setPointSize(20);
         item->setFont(font);

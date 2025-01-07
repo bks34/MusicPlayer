@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QListWidget>
+#include <musiclist.h>
 #include "musicinfowidget.h"
 #include "settingwidget.h"
 
@@ -14,7 +15,7 @@ class RightWidget : public QWidget
     Q_OBJECT
 public:
     explicit RightWidget(QWidget *parent = nullptr);
-    void addMyFavorMusicWidge(QString);
+    void addMyFavorMusicWidge(MusicList::Music m);
 public slots:
     void slotExit();
     void slotMin();
