@@ -12,7 +12,7 @@ MusicList::MusicList()
 void MusicList::loadFile()
 {
     fstream f;
-    f.open("musiclist",std::ios::in);
+    f.open("/usr/share/MusicPlayer/MusicPlayer_musiclist",std::ios::in);
     if(!f.is_open())
     {
         qDebug("musiclist open error");
@@ -35,6 +35,11 @@ void MusicList::loadFile()
         {
             temp.metaData.GetFromFlac(temp.filePath.toStdString());
         }
+        else {
+            temp.metaData.title = temp.filePath;
+            temp.metaData.artist = QString("Unkown");
+            temp.metaData.cover = QImage(":/image/record.png");
+        }
         list.push_back(temp);
     }
     f.close();
@@ -43,7 +48,7 @@ void MusicList::loadFile()
 void MusicList::storeFile()
 {
     fstream f;
-    f.open("musiclist",std::ios::out);
+    f.open("/usr/share/MusicPlayer/MusicPlayer_musiclist",std::ios::out);
     if(!f.is_open())
     {
         qDebug("musiclist open error");

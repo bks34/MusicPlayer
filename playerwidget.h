@@ -20,6 +20,8 @@ public slots:
     void slotNextBtn();
     void slotLastBtn();
 
+    void slotMediaStatusChanged(QMediaPlayer::MediaStatus);
+
     void updateSliderPosition(qint64);
     void updateSliderRange(qint64);
     void setPlayerPosition(int);

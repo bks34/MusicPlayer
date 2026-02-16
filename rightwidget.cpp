@@ -75,32 +75,48 @@ void RightWidget::slotClickMyFavorMusicWidgetItem(QListWidgetItem *item)
     int index=playlistWidget->row(item);
     if(index==0)
     {
-        QString s;
-        MusicList::Music m;
-        s= QFileDialog::getOpenFileName(pmainWidget,tr("请选择要添加的音乐"),tr("."));
-
-        bool exist=false;
-        for(auto it=musiclist->list.begin();it!=musiclist->list.end();it++)
-        {
-            if(s==it->filePath)
-            {
-                exist=true;
-                break;
-            }
+        auto dirPath = QFileDialog::getExistingDirectory(pmainWidget, tr("请选择文件夹"), QDir::homePath());
+        if (dirPath.isEmpty()) {
+            return;
         }
-        if((!s.isEmpty())&&(!exist))
-        {
-            m.filePath=s;
-            if(m.filePath.mid(m.filePath.size()-3,3)=="mp3")
+
+        QDir dir(dirPath);
+        QStringList filters;
+        filters << "*.mp3" << "*.flac" << "*.ogg";
+
+        QStringList files = dir.entryList(filters, QDir::Files | QDir::NoDotAndDotDot, QDir::SortFlag::Name);
+
+        foreach (QString file, files) {
+            QString s = dir.absoluteFilePath(file);
+            MusicList::Music m;
+
+            bool exist=false;
+            for(auto it=musiclist->list.begin();it!=musiclist->list.end();it++)
             {
-                m.metaData.GetFromMp3(m.filePath.toStdString());
+                if(s==it->filePath)
+                {
+                    exist=true;
+                    break;
+                }
             }
-            else if(m.filePath.mid(m.filePath.size()-4,4)=="flac")
+            if((!s.isEmpty())&&(!exist))
             {
-                m.metaData.GetFromFlac(m.filePath.toStdString());
+                m.filePath=s;
+                if(m.filePath.mid(m.filePath.size()-3,3)=="mp3")
+                {
+                    m.metaData.GetFromMp3(m.filePath.toStdString());
+                }
+                else if(m.filePath.mid(m.filePath.size()-4,4)=="flac")
+                {
+                    m.metaData.GetFromFlac(m.filePath.toStdString());
+                } else {
+                    m.metaData.title = m.filePath;
+                    m.metaData.artist = QString("Unkown");
+                    m.metaData.cover = QImage(":/image/record.png");
+                }
+                musiclist->list.push_back(m);
+                addMyFavorMusicWidge(m);
             }
-            musiclist->list.push_back(m);
-            addMyFavorMusicWidge(m);
         }
     }
     else

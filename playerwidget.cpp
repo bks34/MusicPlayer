@@ -46,6 +46,8 @@ PlayerWidget::PlayerWidget(QWidget *parent) : QWidget(parent)
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(updateSliderPosition(qint64)));
     connect(player,SIGNAL(durationChanged(qint64)),this,SLOT(updateSliderRange(qint64)));
     connect(playSlider,SIGNAL(sliderMoved(int)),this,SLOT(setPlayerPosition(int))); //滑动进度条后同时改变音乐播放位置
+
+    connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(slotMediaStatusChanged(QMediaPlayer::MediaStatus)));
 }
 
 void PlayerWidget::slotPlayBtn()
@@ -99,14 +101,15 @@ void PlayerWidget::slotLastBtn()
         slotPlay(index);
 }
 
+void PlayerWidget::slotMediaStatusChanged(QMediaPlayer::MediaStatus s)
+{
+    if(s == QMediaPlayer::EndOfMedia)
+        nextBtn->clicked();
+}
+
 void PlayerWidget::updateSliderPosition(qint64 pos)
 {
     playSlider->setValue(static_cast<int>(pos));
-    if(pos>0 && pos==player->duration() && settings->autoNext)
-    {
-        qDebug()<<"pos: "<<pos;
-        slotNextBtn();
-    }
 }
 
 void PlayerWidget::updateSliderRange(qint64 duration)
